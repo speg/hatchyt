@@ -1,0 +1,30 @@
+extends ./base.jade
+
+append head
+    title Hatchyt
+    link(rel='stylesheet', type='text/css', href='css/dash.css')
+
+
+block subheader
+    form#new-site(action='/site/new/', method='post')
+        input(type='text', placeholder='www.example.com', name='domain')
+        input.btn.success(type='submit', value='Add New Site')
+
+block body
+    table
+        thead
+            th
+            th Domain
+            th Views
+            th Signups
+        tbody
+            each row in results
+                tr
+                    td.thumbnail
+                        iframe(src="/site/test/#{row.domain}")
+                    td 
+                        a(href='/site/#{row.id}/') !{row.domain}
+                    td.tracked(title="# users tracked") !{row.tracked || 0}
+                    td.signed(title="# users signed up") !{row.signed || 0}
+    script(src='js/dash.js')
+    script(src='//hatchyt.com/update')

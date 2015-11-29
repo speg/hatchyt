@@ -1,0 +1,34 @@
+extends ./base.jade
+
+append head
+    link(rel="stylesheet", href="/css/signups.css")
+
+block subheader
+    a.btn(href='/signups/download/') Download All
+
+block body
+    
+    div.container.center.main
+
+        table
+            thead
+                tr
+                    th Domain
+                    th Email
+                    th Date
+            tbody
+                each row in rows
+                    tr
+                        td= row.domain
+                        td= row.email
+                        td= row.datetime
+        if page > 0
+            a.btn(href='/signups/?page=#{page}') Prev
+        if hasMore
+            a.btn(href='/signups/?page=#{page + 2}') Next
+
+    script.
+        var _h = {};
+        _h.data = !{JSON.stringify(rows)}
+
+    script(src="/js/signups.js")

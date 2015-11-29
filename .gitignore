@@ -1,0 +1,10 @@
+config/
+nohup.out
+startup.log
+.sublime-*
+.DS_Store
+node_modules/
+dist/
+backups/
+.hatchyt/
+npm-debug.log

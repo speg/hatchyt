@@ -1,0 +1,35 @@
+.btn:hover 
+  cursor: pointer
+  background-color: #3DB936
+
+.btn 
+    position: relative
+    display: inline-block
+    padding: 6px 12px
+    font-size: 13px
+    font-weight: bold
+    line-height: 20px
+    color: #333
+    white-space: nowrap
+    // vertical-align: middle
+    cursor: pointer
+    background-color: #eee
+    background-image: linear-gradient(#fcfcfc, #eee)
+    border: 1px solid #d5d5d5
+    border-radius: 3px
+    margin: 1px 3px
+    &.small
+        font-size: 11px
+        line-height: 13px
+        padding: 2px
+        
+    
+.loading 
+  color: rgba(0, 0, 0, 0) !important
+
+
+.loading:before
+  content: "Saving"
+  color: rgba(255, 255, 255, 1)
+  position: absolute
+  left: 14px

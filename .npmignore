@@ -1,0 +1,10 @@
+src/
+configs/
+config/
+nohup.out
+startup.log
+.DS_Store
+node_modules/
+backups/
+.babelrc
+.hatchyt/

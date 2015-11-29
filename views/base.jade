@@ -1,0 +1,27 @@
+html
+    head
+        block head
+            script.
+                window._h = {"version": "#{version}"}
+            link(rel='stylesheet', type='text/css', href='/css/styles.css')
+            script(type='text/javascript', src='/browser-polyfill.js')
+            script(type='text/javascript', src='/classnames.js')
+            script(type='text/javascript', src='/react.js')
+            script(type='text/javascript', src='/react-dom.js')
+            script(type='text/javascript', src='/js/hatchyt.packed.js')
+body
+        header
+        section.container.subheader
+            block subheader  
+            ul.pin.bottom.right.quick-links
+                li(class="#{isDash ? 'current' : ''}")
+                    a(href='/') Dashboard
+                li(class="#{isReports ? 'current' : ''}")
+                    a(href='/report/') Views
+                li(class="#{isSingups ? 'current' : ''}")
+                    a(href='/signups/') Signups
+        block body
+
+        block footer
+            footer.
+                Hatchyt &copy; 2015.

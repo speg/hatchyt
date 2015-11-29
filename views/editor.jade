@@ -1,0 +1,37 @@
+extends ./base.jade
+
+append head
+        title Hatchyt | !{site.title}
+        link(rel='stylesheet', type='text/css', href='/codemirror/codemirror.css')
+        script(type='text/javascript', src='/codemirror/codemirror.js')
+        script(type='text/javascript', src='/codemirror/css.js')
+        script(type='text/javascript', src='/codemirror/javascript.js')
+        script(type='text/javascript', src='/codemirror/xml.js')
+
+block subheader
+    button.btn.success(onclick='publish()') Publish
+    a#delete.btn(href='delete/') Delete
+    label(for='title') Title:
+    input#title(type='text', value=site.title)
+    a.btn(href='/site/test/#{site.domain}' target='_blank') Preview
+
+block body
+    div.container
+        div.column.seventy.shadow
+            button(onclick='fullscreen()')!= []
+            iframe#frame(width='100%', height='523px', frameborder='false', sandbox='allow-scripts allow-same-origin')
+        div.column.thirty.shadow#style CSS:
+
+        div.column.half.shadow#markup HTML:
+        div.column.half.shadow#javascript JavaScript:
+
+    
+    //- Hidden data elements
+
+    input#site-id(type='hidden', value=site.id)
+    input#site-domain(type='hidden', value=site.domain)
+    div
+        canvas#rasterView(width=600, height=350)
+    script.
+        var site = !{JSON.stringify(site)};
+    script(type='text/javascript', src='/js/editor.packed.js')

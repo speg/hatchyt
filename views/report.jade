@@ -1,0 +1,31 @@
+extends ./base.jade
+
+append head
+    link(rel="stylesheet", href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css")
+    link(rel="stylesheet", href="/css/reports.css")
+    script(src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js")
+
+block body
+    
+    div.stats
+        h3 Last 30 Days
+            h4 Top Referers
+                ol
+                    each val in referers
+                        li= val.referer
+                            small #{val.count}
+            h4 Top IPs
+                ol
+                    each val in ips
+                        li= val.ip_address
+                            small #{val.count}
+    div.chart-container
+        div.ct-chart
+    div.chart-legend
+
+    script.
+        _h.data = !{JSON.stringify(tracks)}
+        _h.refs = !{JSON.stringify(referers)}
+        _h.ips = !{JSON.stringify(ips)}
+
+    script(src="/js/reports.js")

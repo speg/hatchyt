@@ -1,0 +1,45 @@
+{
+  "name": "hatchyt",
+  "version": "0.0.0",
+  "description": "Hatch your next idea.",
+  "main": "server.js",
+  "bin": "scripts/_run.sh",
+  "scripts": {
+    "start": "scripts/startup.sh",
+    "stop": "scripts/stop.sh",
+    "dev": "scripts/_run.sh dev",
+    "build": "scripts/build.sh",
+    "prepublish": "scripts/build.sh",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "web",
+    "ideas",
+    "developer",
+    "startups",
+    "landing"
+  ],
+  "author": "speg",
+  "license": "GPL-3.0",
+  "repository": "speg/hatchyt",
+  "dependencies": {
+    "basic-auth": "^1.0.3",
+    "body-parser": "^1.13.2",
+    "express": "^4.13.1",
+    "install": "^0.2.6",
+    "jade": "^1.11.0",
+    "multer": ">1.0.0",
+    "npm": "^3.3.12",
+    "prompt": "^0.2.14",
+    "raven": "^0.8.1",
+    "sqlite3": "^3.1.1",
+    "stylus": "^0.52.4",
+    "uglify-js": "^2.4.23"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.1.2",
+    "babel-preset-react": "^6.1.2",
+    "nodemon": "^1.8.1",
+    "webpack": "^1.12.3"
+  }
+}
