@@ -1,9 +1,9 @@
 #!/bin/bash
 
-if [[ ! -f process.id ]]; then
+if [[ ! -f .hatchyt/process.id ]]; then
     echo "No process found."
     exit 0
 fi
 
 kill -9 `cat .hatchyt/process.id` && echo "Everything is stopped."
-rm process.id
+rm .hatchyt/process.id

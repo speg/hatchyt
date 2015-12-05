@@ -35,7 +35,7 @@ server {
 
 
     location / {
-        root ${ctx.root}/output/$http_host;
+        root ${ctx.root}/.hatchyt/output/$http_host;
     }
 }
 
