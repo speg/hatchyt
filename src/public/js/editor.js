@@ -3,15 +3,21 @@ import Editor from './code/editor'
 import {thirdPartyScripts, thirdPartyStyles} from "../../shared/utilities";
 
 const defaultStyles = [
-    { id: 0, name: 'Bootstrap', checked: false, uri: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'},
     { id: 1, name: 'Normalize', checked: false, uri: '//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css'},
+    { id: 2, name: 'PureCSS', checked: false, uri: '//yui.yahooapis.com/pure/0.6.0/pure-min.css'},
+    { id: 0, name: 'Bootstrap', checked: false, uri: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'},
+    { id: 3, name: 'Foundation', checked: false, uri: 'cdnjs.cloudflare.com/ajax/libs/foundation/6.0.1/css/foundation.min.css'},
+    { id: 4, name: '960', checked: false, uri: '//cdnjs.cloudflare.com/ajax/libs/960gs/0/960.min.css'},
 ]
 
 const defaultScripts = [
     { id: 0, name: 'jQuery', checked: false, uri: '//code.jquery.com/jquery-1.11.3.min.js'},
-    { id: 1, name: 'React', checked: false, dependencies: []},
-    { id: 2, name: 'Bootstrap', checked: false, dependencies: [0]},
+    { id: 1, name: 'React', checked: false, dependencies: [4], uri: '//cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.min.js'},
+    { id: 2, name: 'Bootstrap', checked: false, dependencies: [0], uri: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'},
     { id: 3, name: 'Google Analytics', input: 'Enter your GA ID:', checked: false, dependencies: []},
+    { id: 4, name: 'React DOM', checked: false, dependencies: [1], uri: '//cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.min.js'},
+    { id: 5, name: 'Underscore', checked: false, dependencies: [], uri: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'},
+    { id: 6, name: 'Foundation', checked: false, dependencies: [0], uri: '//cdnjs.cloudflare.com/ajax/libs/foundation/6.0.1/js/foundation.min.js'},
 ]
 
 site.config = JSON.parse(site.config)
@@ -49,6 +55,13 @@ function update(e) {
     unsavedChanges = true;
 }
 
+function mergeOptions(custom, key, original) {   
+// merges the users custom selections with the originals
+
+    if (!custom || !custom[key]) return original
+    return original.map(o => {return custom[key].find(c => c.id === o.id) || o}).concat(custom[key].filter(x => x.custom))
+}
+
 
 var title = document.getElementById('title');
 
@@ -59,7 +72,7 @@ var scriptEditor = new Editor(document.getElementById('javascript'), {
     value: site.script || '',
     title: 'JavaScript Library',
     extraKeys: {'Cmd-Enter': update},
-    configMenu: (site.config && site.config.extraScripts) || defaultScripts
+    configMenu: mergeOptions(site.config, 'extraScripts', defaultScripts)
 });
 
 var htmlEditor = new Editor(document.getElementById('markup'), {
@@ -76,7 +89,7 @@ var cssEditor = new Editor(document.getElementById('style'), {
     value: site.style || '',
     extraKeys: {'Cmd-Enter': update},
     lineWrapping: true,
-    configMenu: (site.config && site.config.extraCSS) || defaultStyles
+    configMenu: mergeOptions(site.config, 'extraCSS', defaultStyles)
 });
 
 if (console.debug) {
@@ -100,8 +113,8 @@ function publish(evnt) {
 
     // build the configuration settings
     let config = {
-        extraScripts: JSON.parse(scriptEditor.settings),
-        extraCSS: JSON.parse(cssEditor.settings)
+        extraScripts: JSON.parse(scriptEditor.settings).filter(x => x.checked),
+        extraCSS: JSON.parse(cssEditor.settings).filter(x => x.checked)
     }
     form.append('config', JSON.stringify(config))
 
