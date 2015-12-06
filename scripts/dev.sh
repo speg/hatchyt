@@ -1,7 +1,7 @@
 # Launch all the dev tools in watch mode.
 
 # LOCAL!!
-export DC_CONFIG="dev"
+export HATCHY_ENV="dev"
 STYLUS_BIN=$ROOT/node_modules/stylus/bin/stylus
 
 # GLOBAL INSTASLLS - TODO: check if these exist 

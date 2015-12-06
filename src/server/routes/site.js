@@ -46,6 +46,7 @@ function createSite(req, res) {
 function trackSite(req, res) {
     res.cookie('tracked', 'true', {maxAge: '86400000'})
     res.send()
+    if (/preview$/.test(req.headers.referer)) return null
     db.run('INSERT INTO tracking (domain, referer, ip_address) VALUES (?, ?, ?)', [req.hostname, req.query.ref, req.ip], function(e){})
 }
 

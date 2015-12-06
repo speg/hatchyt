@@ -13,7 +13,7 @@ block subheader
     a#delete.btn(href='delete/') Delete
     label(for='title') Title:
     input#title(type='text', value=site.title)
-    a.btn(href='/site/test/#{site.domain}' target='_blank') Preview
+    a.btn(href='/site/test/#{site.domain}?preview' target='_blank') Preview
 
 block body
     div.container
