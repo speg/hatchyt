@@ -1,10 +1,15 @@
 # Launch all the dev tools in watch mode.
 
 # LOCAL!!
-export HATCHY_ENV="dev"
+export HATCHYT_ENV="dev"
 STYLUS_BIN=$ROOT/node_modules/stylus/bin/stylus
 
 # GLOBAL INSTASLLS - TODO: check if these exist 
+if ! [[ -d $ROOT/.hatchyt ]]
+    then
+    mkdir .hatchyt
+fi
+
 if [[ -d $ROOT/node_modules/babel ]]
     then
         BABEL_BIN=$ROOT/node_modules/babel/bin/babel.js

@@ -30,7 +30,7 @@ export default function prompter(fn) {
     prompt.start()
     prompt.get(schema, (err, input)=>{
         if (err) throw err
-        settings.set('userConfig', input)
+        settings.userOptions = input
         fs.writeFile('.hatchyt/settings.json', JSON.stringify(input))
         const root = process.cwd()
         const admin = input.domain
