@@ -1,7 +1,6 @@
-config/
 nohup.out
 startup.log
-.sublime-*
+*.sublime-*
 .DS_Store
 node_modules/
 dist/

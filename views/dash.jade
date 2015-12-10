@@ -21,7 +21,7 @@ block body
             each row in results
                 tr
                     td.thumbnail
-                        iframe(src="/site/test/#{row.domain}")
+                        iframe(src="/site/test/#{row.domain}?preview")
                     td 
                         a(href='/site/#{row.id}/') !{row.domain}
                     td.tracked(title="# users tracked") !{row.tracked || 0}
