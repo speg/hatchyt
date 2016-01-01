@@ -33,6 +33,11 @@ function confirmDelete(e) {
     }
 }
 
+function textFromTemplates(editor) {
+    const templates = JSON.parse(editor.templates).filter(x=>x.checked)
+    return templates.map(x=>x.text).join('')
+}
+
 function update(e) {
     var head = '<!doctype html><head>';
     var styles = '<style type="text/css">body{background-color:white;}form._h-sign input[name="name"]{display: none;}</style>'
@@ -44,9 +49,7 @@ function update(e) {
     
     body += thirdPartyScripts(scriptEditor.settings)
     styles += thirdPartyStyles(cssEditor.settings)
-
-
-    styles += '<style type="text/css">' + cssEditor.mirror.getValue() + '</style>'
+    styles += '<style type="text/css">' + textFromTemplates(cssEditor) + cssEditor.mirror.getValue() + '</style>'
 
     frame.open()
     frame.write(head + styles + '</head>' + body + script + '</script></body></html>')
@@ -56,15 +59,12 @@ function update(e) {
 }
 
 function mergeOptions(custom, key, original) {   
-// merges the users custom selections with the originals
-
+    // merges the users custom selections with the originals
     if (!custom || !custom[key]) return original
     return original.map(o => {return custom[key].find(c => c.id === o.id) || o}).concat(custom[key].filter(x => x.custom))
 }
 
-
 var title = document.getElementById('title');
-
 
 var scriptEditor = new Editor(document.getElementById('javascript'), {
     id: 'scripts',
@@ -89,14 +89,13 @@ var cssEditor = new Editor(document.getElementById('style'), {
     value: site.style || '',
     extraKeys: {'Cmd-Enter': update},
     lineWrapping: true,
+    templates: mergeOptions(site.config, 'cssTemplates', defaultTemplates),
     configMenu: mergeOptions(site.config, 'extraCSS', defaultStyles)
 });
 
-if (console.debug) {
-    console.debug('Global site available', site)
-} else {
-    site = null;
-}
+if (console.debug) console.debug('Site debug loaded:', site)
+
+
 cssEditor.mirror.setSize('100%', 500 - 18);
 
 function publish(evnt) {
@@ -114,7 +113,8 @@ function publish(evnt) {
     // build the configuration settings
     let config = {
         extraScripts: JSON.parse(scriptEditor.settings).filter(x => x.checked),
-        extraCSS: JSON.parse(cssEditor.settings).filter(x => x.checked)
+        extraCSS: JSON.parse(cssEditor.settings).filter(x => x.checked),
+        cssTemplates: JSON.parse(cssEditor.templates).filter(x => x.checked)
     }
     form.append('config', JSON.stringify(config))
 

@@ -14,11 +14,12 @@ export default class configMenu extends React.Component {
         super(props)
         autoBind(this)
         let loadedItems = props.choices || JSON.parse(localStorage.getItem('items') || [])
-        this.state = {items: loadedItems, enabled: false}
+        let loadedTemplates = props.templates || []
+        this.state = {items: loadedItems, templates: loadedTemplates, enabled: false}
     }
 
     render() {
-        let tableRows = this.state.items.map((obj, index) => <CheckItem id={this.props.id + obj.id}
+        let vendors = this.state.items.map((obj, index) => <CheckItem id={this.props.id + obj.id}
             deleteHandler={this.handleRemove.bind(this, index)}
             clickHandler={this.handleClick.bind(this, index)}
             key={index}
@@ -27,19 +28,33 @@ export default class configMenu extends React.Component {
             isCustom={obj.custom}
             text={obj.name} 
         />)
+        let templates = this.state.templates.map((obj, index) => <CheckItem id={this.props.id + obj.id}
+            key={'t_' + index}
+            text={obj.name}
+            clickHandler={this.handleTemplateClick.bind(this, index)}
+            isChecked={obj.checked}
+        />)
+
+        const classes = classNames({
+            checked: this.props.isChecked,
+        })
 
         return <div className={"thingList " + (this.state.enabled ? "" : "closed")}>
             <div className="config-menu btn small" onClick={this.handleToggle}><span className={"icon " + (this.state.enabled ? "icon-triangle-down" : "closed icon-triangle-right")}></span>{this.props.title}</div>
             <table className="someThings">
                 <thead>
-                <tr><th></th><th>Inline</th></tr>
+                <tr><th><span onClick={this.handleSwap}>&lt;-&gt;</span></th><th>Inline</th></tr>
                 </thead>
-                <tbody>
-                {tableRows}
+                <tbody className={classNames({vendor: true, hidden: this.state.showTemplates})}>
+                    {vendors}
                 <tr><td><input onKeyDown={this.handleCustom} type="text" placeholder="http://custom.uri" /></td></tr>
+                </tbody>
+                <tbody className={classNames({templates: true, hidden: !this.state.showTemplates})}>
+                    {templates}
                 </tbody>
             </table>
             <input id={"config-menu-"+this.props.id} name={this.props.id} type="hidden" value={JSON.stringify(this.state.items)} />
+            <input id={"config-templates-"+this.props.id} name={this.props.id} type="hidden" value={JSON.stringify(this.state.templates)} />
         </div>
     }
 
@@ -64,8 +79,16 @@ export default class configMenu extends React.Component {
         this.setState({enabled: !this.state.enabled})
     }
 
-    handleClick(index, evnt){
-        let items = this.state.items
+    handleSwap(evnt) {
+        this.setState({showTemplates: !this.state.showTemplates})
+    }
+
+    handleTemplateClick(index, evnt) {
+        this.handleClick(index, evnt, 'templates')
+    }
+
+    handleClick(index, evnt, key){
+        let items = this.state[key] || this.state.items
         let item = items[index]
         if(evnt.target.classList.contains('inline')) {
             item.inline = !item.inline
@@ -95,7 +118,12 @@ export default class configMenu extends React.Component {
                 })
             }            
         }
-        this.save({items})
+
+        // update object with dynamic name (items/templates)
+        let u = {}
+        if (!key) { key = 'items' }
+        u[key] = items
+        this.save(u)
     }
 
     save(update) {
@@ -110,7 +138,8 @@ configMenu.defaultProps = {
     items: [],
     title: "A list of things!",
     enabled: false,
-    inline: false
+    inline: false,
+    showTemplates: false
 }
 
 configMenu.propTypes = {
@@ -118,7 +147,8 @@ configMenu.propTypes = {
     'enabled': React.PropTypes.bool.isRequired,
     'inline': React.PropTypes.bool.isRequired,
     'input': React.PropTypes.string,
-    'value': React.PropTypes.string
+    'value': React.PropTypes.string,
+    'showTemplates': React.PropTypes.bool.isRequired
 }
 
 class CheckItem extends React.Component {

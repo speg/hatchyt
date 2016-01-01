@@ -21,6 +21,11 @@ export default function requirements(){
   "datetime" datetime DEFAULT(current_timestamp),
   ip_address varchar(32)
  );
+  CREATE TABLE if not exists templates (
+  id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+  name varchar(256),
+  text varchar
+ );
   CREATE TABLE if not exists signups (
   domain varchar(512) NOT NULL,
   email varchar(128),
