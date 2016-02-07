@@ -43,7 +43,7 @@ export default class configMenu extends React.Component {
             <div className="config-menu btn small" onClick={this.handleToggle}><span className={"icon " + (this.state.enabled ? "icon-triangle-down" : "closed icon-triangle-right")}></span>{this.props.title}</div>
             <table className="someThings">
                 <thead>
-                <tr><th><span onClick={this.handleSwap}>&lt;-&gt;</span></th><th>Inline</th></tr>
+                <tr><th><span onClick={this.handleSwap}>&lt;-&gt;</span></th><th className="hidden">Inline</th></tr>
                 </thead>
                 <tbody className={classNames({vendor: true, hidden: this.state.showTemplates})}>
                     {vendors}
@@ -161,7 +161,7 @@ class CheckItem extends React.Component {
                 <input type="checkbox" onChange={this.props.clickHandler} checked={this.props.isChecked} id={this.props.id} />
                 <label htmlFor={this.props.id}>{this.props.text}</label>
             </td>
-            <td className="text-center">
+            <td className="text-center hidden">
                 <input type="checkbox" onChange={this.props.clickHandler} className="inline" id={'inline_' + this.props.id} checked={this.props.isInline} />
                 <Trasher id={this.props.id} deleteHandler={this.props.deleteHandler} active={this.props.isCustom} />
             </td>
