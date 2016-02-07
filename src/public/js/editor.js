@@ -3,21 +3,24 @@ import Editor from './code/editor'
 import {thirdPartyScripts, thirdPartyStyles} from "../../shared/utilities";
 
 const defaultStyles = [
-    { id: 1, name: 'Normalize', checked: false, uri: '//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css'},
-    { id: 2, name: 'PureCSS', checked: false, uri: '//yui.yahooapis.com/pure/0.6.0/pure-min.css'},
-    { id: 0, name: 'Bootstrap', checked: false, uri: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'},
-    { id: 3, name: 'Foundation', checked: false, uri: 'cdnjs.cloudflare.com/ajax/libs/foundation/6.0.1/css/foundation.min.css'},
-    { id: 4, name: '960', checked: false, uri: '//cdnjs.cloudflare.com/ajax/libs/960gs/0/960.min.css'},
+    { id: 1, name: 'Normalize', uri: '//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css'},
+    { id: 2, name: 'PureCSS', uri: '//yui.yahooapis.com/pure/0.6.0/pure-min.css'},
+    { id: 0, name: 'Bootstrap', uri: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'},
+    { id: 3, name: 'Foundation', uri: '//cdnjs.cloudflare.com/ajax/libs/foundation/6.0.1/css/foundation.min.css'},
+    { id: 4, name: '960', uri: '//cdnjs.cloudflare.com/ajax/libs/960gs/0/960.min.css'},
+    { id: 5, name: 'Bootstrap 4', uri: '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css'},
+    { id: 5, name: 'Milligram', uri: '//cdnjs.cloudflare.com/ajax/libs/milligram/1.1.0/milligram.min.css'},
 ]
 
 const defaultScripts = [
-    { id: 0, name: 'jQuery', checked: false, uri: '//code.jquery.com/jquery-1.11.3.min.js'},
-    { id: 1, name: 'React', checked: false, dependencies: [4], uri: '//cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.min.js'},
-    { id: 2, name: 'Bootstrap', checked: false, dependencies: [0], uri: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'},
-    { id: 3, name: 'Google Analytics', input: 'Enter your GA ID:', checked: false, dependencies: []},
-    { id: 4, name: 'React DOM', checked: false, dependencies: [1], uri: '//cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.min.js'},
-    { id: 5, name: 'Underscore', checked: false, dependencies: [], uri: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'},
-    { id: 6, name: 'Foundation', checked: false, dependencies: [0], uri: '//cdnjs.cloudflare.com/ajax/libs/foundation/6.0.1/js/foundation.min.js'},
+    { id: 0, name: 'jQuery', uri: '//code.jquery.com/jquery-2.2.0.min.js'},
+    { id: 1, name: 'React', dependencies: [4], uri: '//cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.min.js'},
+    { id: 2, name: 'Bootstrap', dependencies: [0], uri: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'},
+    { id: 3, name: 'Google Analytics', input: 'Enter your GA ID:', dependencies: []},
+    { id: 4, name: 'React DOM', dependencies: [1], uri: '//cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.min.js'},
+    { id: 5, name: 'Underscore', dependencies: [], uri: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'},
+    { id: 6, name: 'Foundation', dependencies: [0], uri: '//cdnjs.cloudflare.com/ajax/libs/foundation/6.0.1/js/foundation.min.js'},
+    { id: 6, name: 'Bootstrap 4', dependencies: [0], uri: '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js'},
 ]
 
 site.config = JSON.parse(site.config)
