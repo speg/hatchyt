@@ -59,7 +59,7 @@ export default class configMenu extends React.Component {
     }
 
     handleRemove(id, evnt) {
-        const confirmed = confirm('Are you sure you want to delelte this script?')
+        const confirmed = confirm('Are you sure you want to delete this script?')
         if (confirmed) {
             let items = this.state.items;
             items.splice(id, 1)

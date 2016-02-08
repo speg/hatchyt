@@ -75,7 +75,9 @@ var scriptEditor = new Editor(document.getElementById('javascript'), {
     value: site.script || '',
     title: 'JavaScript Library',
     extraKeys: {'Cmd-Enter': update},
-    configMenu: mergeOptions(site.config, 'extraScripts', defaultScripts)
+    configMenu: mergeOptions(site.config, 'extraScripts', defaultScripts),
+    templates: mergeOptions(site.config, 'scriptTemplates', defaultTemplates.filter(x=>x.name.startsWith('scripts'))
+        .map(x=>{x.name=x.name.substr(8); return x})),
 });
 
 var htmlEditor = new Editor(document.getElementById('markup'), {
@@ -92,7 +94,8 @@ var cssEditor = new Editor(document.getElementById('style'), {
     value: site.style || '',
     extraKeys: {'Cmd-Enter': update},
     lineWrapping: true,
-    templates: mergeOptions(site.config, 'cssTemplates', defaultTemplates),
+    templates: mergeOptions(site.config, 'cssTemplates', defaultTemplates.filter(x=>x.name.startsWith('styles'))
+        .map(x=>{x.name=x.name.substr(7); return x})),
     configMenu: mergeOptions(site.config, 'extraCSS', defaultStyles)
 });
 
@@ -117,7 +120,8 @@ function publish(evnt) {
     let config = {
         extraScripts: JSON.parse(scriptEditor.settings).filter(x => x.checked),
         extraCSS: JSON.parse(cssEditor.settings).filter(x => x.checked),
-        cssTemplates: JSON.parse(cssEditor.templates).filter(x => x.checked)
+        cssTemplates: JSON.parse(cssEditor.templates).filter(x => x.checked),
+        scriptTemplates: JSON.parse(scriptEditor.templates).filter(x => x.checked)
     }
     form.append('config', JSON.stringify(config))
 

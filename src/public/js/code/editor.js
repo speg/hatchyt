@@ -24,7 +24,7 @@ export default class Editor {
         const form = new FormData()
         const name = prompt('Enter name to save template as:')
         if (!name) return
-        form.append('name', name)
+        form.append('name', [this._id, name].join('-'))
         form.append('text', this.mirror.getValue())
         request.open('post', '/template/')
         request.send(form)
