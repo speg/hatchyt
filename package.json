@@ -1,6 +1,6 @@
 {
   "name": "hatchyt",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Hatch your next idea.",
   "main": "server.js",
   "bin": "scripts/_run.sh",
