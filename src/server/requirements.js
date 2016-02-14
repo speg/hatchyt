@@ -47,7 +47,7 @@ export default function requirements(){
   try {
     let userSettings = fs.readFileSync('.hatchyt/settings.json', {encoding: 'utf8'})
     let json = JSON.parse(userSettings)
-    settings.set('userOptions', json)
+    settings.userOptions = json
     return true
   } catch (e) {
     return false
