@@ -3,21 +3,24 @@ import Editor from './code/editor'
 import {thirdPartyScripts, thirdPartyStyles} from "../../shared/utilities";
 
 const defaultStyles = [
-    { id: 1, name: 'Normalize', checked: false, uri: '//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css'},
-    { id: 2, name: 'PureCSS', checked: false, uri: '//yui.yahooapis.com/pure/0.6.0/pure-min.css'},
-    { id: 0, name: 'Bootstrap', checked: false, uri: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'},
-    { id: 3, name: 'Foundation', checked: false, uri: 'cdnjs.cloudflare.com/ajax/libs/foundation/6.0.1/css/foundation.min.css'},
-    { id: 4, name: '960', checked: false, uri: '//cdnjs.cloudflare.com/ajax/libs/960gs/0/960.min.css'},
+    { id: 1, name: 'Normalize', uri: '//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css'},
+    { id: 2, name: 'PureCSS', uri: '//yui.yahooapis.com/pure/0.6.0/pure-min.css'},
+    { id: 0, name: 'Bootstrap', uri: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'},
+    { id: 3, name: 'Foundation', uri: '//cdnjs.cloudflare.com/ajax/libs/foundation/6.0.1/css/foundation.min.css'},
+    { id: 4, name: '960', uri: '//cdnjs.cloudflare.com/ajax/libs/960gs/0/960.min.css'},
+    { id: 5, name: 'Bootstrap 4', uri: '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css'},
+    { id: 5, name: 'Milligram', uri: '//cdnjs.cloudflare.com/ajax/libs/milligram/1.1.0/milligram.min.css'},
 ]
 
 const defaultScripts = [
-    { id: 0, name: 'jQuery', checked: false, uri: '//code.jquery.com/jquery-1.11.3.min.js'},
-    { id: 1, name: 'React', checked: false, dependencies: [4], uri: '//cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.min.js'},
-    { id: 2, name: 'Bootstrap', checked: false, dependencies: [0], uri: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'},
-    { id: 3, name: 'Google Analytics', input: 'Enter your GA ID:', checked: false, dependencies: []},
-    { id: 4, name: 'React DOM', checked: false, dependencies: [1], uri: '//cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.min.js'},
-    { id: 5, name: 'Underscore', checked: false, dependencies: [], uri: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'},
-    { id: 6, name: 'Foundation', checked: false, dependencies: [0], uri: '//cdnjs.cloudflare.com/ajax/libs/foundation/6.0.1/js/foundation.min.js'},
+    { id: 0, name: 'jQuery', uri: '//code.jquery.com/jquery-2.2.0.min.js'},
+    { id: 1, name: 'React', dependencies: [4], uri: '//cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.min.js'},
+    { id: 2, name: 'Bootstrap', dependencies: [0], uri: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'},
+    { id: 3, name: 'Google Analytics', input: 'Enter your GA ID:', dependencies: []},
+    { id: 4, name: 'React DOM', dependencies: [1], uri: '//cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.min.js'},
+    { id: 5, name: 'Underscore', dependencies: [], uri: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'},
+    { id: 6, name: 'Foundation', dependencies: [0], uri: '//cdnjs.cloudflare.com/ajax/libs/foundation/6.0.1/js/foundation.min.js'},
+    { id: 6, name: 'Bootstrap 4', dependencies: [0], uri: '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js'},
 ]
 
 site.config = JSON.parse(site.config)
@@ -33,6 +36,11 @@ function confirmDelete(e) {
     }
 }
 
+function textFromTemplates(editor) {
+    const templates = JSON.parse(editor.templates).filter(x=>x.checked)
+    return templates.map(x=>x.text).join('')
+}
+
 function update(e) {
     var head = '<!doctype html><head>';
     var styles = '<style type="text/css">body{background-color:white;}form._h-sign input[name="name"]{display: none;}</style>'
@@ -44,9 +52,7 @@ function update(e) {
     
     body += thirdPartyScripts(scriptEditor.settings)
     styles += thirdPartyStyles(cssEditor.settings)
-
-
-    styles += '<style type="text/css">' + cssEditor.mirror.getValue() + '</style>'
+    styles += '<style type="text/css">' + textFromTemplates(cssEditor) + cssEditor.mirror.getValue() + '</style>'
 
     frame.open()
     frame.write(head + styles + '</head>' + body + script + '</script></body></html>')
@@ -56,15 +62,12 @@ function update(e) {
 }
 
 function mergeOptions(custom, key, original) {   
-// merges the users custom selections with the originals
-
+    // merges the users custom selections with the originals
     if (!custom || !custom[key]) return original
     return original.map(o => {return custom[key].find(c => c.id === o.id) || o}).concat(custom[key].filter(x => x.custom))
 }
 
-
 var title = document.getElementById('title');
-
 
 var scriptEditor = new Editor(document.getElementById('javascript'), {
     id: 'scripts',
@@ -72,7 +75,9 @@ var scriptEditor = new Editor(document.getElementById('javascript'), {
     value: site.script || '',
     title: 'JavaScript Library',
     extraKeys: {'Cmd-Enter': update},
-    configMenu: mergeOptions(site.config, 'extraScripts', defaultScripts)
+    configMenu: mergeOptions(site.config, 'extraScripts', defaultScripts),
+    templates: mergeOptions(site.config, 'scriptTemplates', defaultTemplates.filter(x=>x.name.startsWith('scripts'))
+        .map(x=>{x.name=x.name.substr(8); return x})),
 });
 
 var htmlEditor = new Editor(document.getElementById('markup'), {
@@ -89,14 +94,14 @@ var cssEditor = new Editor(document.getElementById('style'), {
     value: site.style || '',
     extraKeys: {'Cmd-Enter': update},
     lineWrapping: true,
+    templates: mergeOptions(site.config, 'cssTemplates', defaultTemplates.filter(x=>x.name.startsWith('styles'))
+        .map(x=>{x.name=x.name.substr(7); return x})),
     configMenu: mergeOptions(site.config, 'extraCSS', defaultStyles)
 });
 
-if (console.debug) {
-    console.debug('Global site available', site)
-} else {
-    site = null;
-}
+if (console.debug) console.debug('Site debug loaded:', site)
+
+
 cssEditor.mirror.setSize('100%', 500 - 18);
 
 function publish(evnt) {
@@ -114,7 +119,9 @@ function publish(evnt) {
     // build the configuration settings
     let config = {
         extraScripts: JSON.parse(scriptEditor.settings).filter(x => x.checked),
-        extraCSS: JSON.parse(cssEditor.settings).filter(x => x.checked)
+        extraCSS: JSON.parse(cssEditor.settings).filter(x => x.checked),
+        cssTemplates: JSON.parse(cssEditor.templates).filter(x => x.checked),
+        scriptTemplates: JSON.parse(scriptEditor.templates).filter(x => x.checked)
     }
     form.append('config', JSON.stringify(config))
 

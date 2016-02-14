@@ -12,9 +12,13 @@ siteRouter.use(auth)
 
 function editSite(req, res) {
     db.get('SELECT id, domain, title, script, markup, style, config FROM sites WHERE id = ?', [req.params.site], function(err, row){
-        if(err) console.log(err)
-        res.render('editor', {site: row})
-    })    
+        if(err) {res.send(err)}
+        else {
+            db.all('SELECT id, name, text from templates', function(err, templates){
+                res.render('editor', {site: row, templates})
+            })
+        }
+    })
 }
 
 function deleteSite(req, res) {

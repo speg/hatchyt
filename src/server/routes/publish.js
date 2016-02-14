@@ -24,11 +24,15 @@ export default function publish(req, res) {
     const stylesheets = thirdPartyStyles(JSON.stringify(settings.extraCSS))
     const html = req.body.markup
     const scripts = thirdPartyScripts(JSON.stringify(settings.extraScripts))
-    const js = ugly.minify('(function(){' + bundledScript + '\n' + req.body.script + '\n}())', {fromString: true}).code
 
+    // add style templates (only checked tempaltes are saved, so no need to filter)
+    // TODO: lookup templates from DB so we can get changes, pre-req: edit templates
+    const styleTemplates = settings.cssTemplates.map(x=>x.text).join('')
+    const scriptTemplates = settings.scriptTemplates.map(x=>x.text).join('\n')
+    const js = ugly.minify('(function(){' + bundledScript + '\n' + scriptTemplates + '\n' + req.body.script + '\n}())', {fromString: true}).code
     stylus.render(req.body.stylesheet, {filename: 'building.css', compress: true}, function(err, css){
         if (err) css = `/* Error building style: ${err.toString()} */`
-        const output = renderHTML(title, css, stylesheets, html, scripts, js).replace(/\n/g, '')
+        const output = renderHTML(title, styleTemplates + css, stylesheets, html, scripts, js).replace(/\n/g, '')
         const domain = parseRoot(req.body.domain)
         fs.writeFile(`.hatchyt/output/${domain}/index.html`, output, saveSite(req))     
     })

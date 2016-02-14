@@ -13,6 +13,8 @@ html
 *, *:before, *:after
   box-sizing: inherit
 
+.hidden
+  display: none
 
 body
   background-color: rgba(160, 158, 158, 0.75)
@@ -68,7 +70,8 @@ input
   background: blue
   padding: 1px 10px
   border-radius: 4px 4px 0 0
-
+  >div
+    display: inline-block
 
 
 /*Styles for ConfigMenu*/
@@ -77,24 +80,18 @@ iframe
   border: none
 
 tr.checked 
-  font-weight: bolder 
+  font-weight: bolder
 
+table.someThings
+  td input
+    margin-right: 0.5em
+  td, th
+    padding: 2px 10px
+  label
+    margin-bottom: 0
 
-table.someThings td input 
-  margin-right: 0.5em
-
-
-table.someThings td, table.someThings th 
-  padding: 2px 10px
-
-
-table.someThings label 
-  margin-bottom: 0
-
-
-.closed>table, .closed>button 
+.closed>table, .closed>button
   display: none
-
 
 .thingList button
   display: none 
@@ -102,16 +99,16 @@ table.someThings label
 .thingList
   position: relative
 
-
 .thingList>table 
-  z-index: 99;
-  color: #F3F3F3;
-  position: absolute;
-  padding: 50px;
-  border-radius: 4px;
-  left: -15%;
-  background-color: rgba(118, 118, 118, 0.88);
-  box-shadow: 2px 3px 7px 2px rgba(188,188,188,0.69);
+  z-index: 99
+  color: #F3F3F3
+  position: absolute
+  padding: 50px
+  border-radius: 4px
+  left: -15%
+  background-color: rgba(118, 118, 118, 0.88)
+  box-shadow: 2px 3px 7px 2px rgba(188,188,188,0.69)
+  min-width: 200px
 
 
 .thingList>button 

@@ -14,6 +14,20 @@ export default class Editor {
         if (options.configMenu) {
             this.addButton({className: 'choices', id: options.id})
         }
+        if (options.templates) {
+            this.addButton({text: 'Save Template', callback: this.saveTemplate})
+        }
+    }
+
+    saveTemplate(e) {
+        const request = new XMLHttpRequest()
+        const form = new FormData()
+        const name = prompt('Enter name to save template as:')
+        if (!name) return
+        form.append('name', [this._id, name].join('-'))
+        form.append('text', this.mirror.getValue())
+        request.open('post', '/template/')
+        request.send(form)
     }
 
     addButton(options) {
@@ -22,7 +36,7 @@ export default class Editor {
         button.classList.add(...classes)
 
         if (options.id) {
-            ReactDOM.render(<ConfigMenu id={options.id} choices={this.options.configMenu} title={this.options.title || this.options.mode} />, button)    
+            ReactDOM.render(<ConfigMenu id={options.id} choices={this.options.configMenu} templates={this.options.templates} title={this.options.title || this.options.mode} />, button)
         }
 
         if(options.callback) {
@@ -39,5 +53,9 @@ export default class Editor {
 
     get settings() {
         return document.getElementById(`config-menu-${this._id}`).value
+    }
+
+    get templates() {
+        return document.getElementById(`config-templates-${this._id}`).value
     }
 }
